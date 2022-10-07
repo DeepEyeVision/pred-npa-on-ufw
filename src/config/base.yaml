@@ -1,0 +1,114 @@
+root: ../dataset
+arch: PraNet_Res2Net
+optimizer:
+    lr:
+        dist: suggest_loguniform
+        name: lr
+        low: 7e-6
+        high: 3e-5   
+    weight_decay:
+        dist: suggest_loguniform
+        name: weight_decay
+        low: 5e-6
+        high: 5e-5
+    betas: [0.9, 0.999]
+    eps: 2e-7
+
+lr_scheduler:
+    milestones: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+    gamma:
+        dist: suggest_uniform
+        name: gamma
+        low: 0.3
+        high: 0.6
+
+grad_clip:
+    dist: suggest_uniform
+    name: grad_clip
+    low: 0.02
+    high: 0.5
+
+criterion:
+    alpha: 0.7
+    gamma:
+        dist: suggest_loguniform
+        name: fl_gamma
+        low: 1.5
+        high: 3.0
+    mu: 6.0
+    kernel_size: 63
+
+loss_weights: 
+    lat5: 1
+    lat4: 1
+    lat3: 1
+    out: 1
+    aux:
+        dist: suggest_loguniform
+        name: aux_weight
+        low: 2.0
+        high: 4.0
+
+stat:
+    img:
+        mean: [0.485, 0.456, 0.406] # ImageNet 
+        # mean: [0.1919, 0.1258, 0.000] # NPA
+        std: [0.229, 0.224, 0.225] # ImageNet
+        # std: [0.2078, 0.1585, 1.0000] # NPA
+    sub_img:
+        mean: [0.485, 0.456, 0.406]
+        std: [0.229, 0.224, 0.225]
+
+colorjitter:
+    brightness: 0.6
+    contrast: 0.4
+    saturation: 0.4
+affine:
+    degrees: 360
+    translate:
+        0.1
+        # dist: suggest_uniform
+        # name: translate
+        # low: 0.05
+        # high: 0.3
+    scale: 
+        0.75
+        # dist: suggest_uniform
+        # name: scale
+        # low: 0.3
+        # high: 0.8
+    
+base_size: # base size determines its resolution
+    1536
+    # dist: suggest_int
+    # name: base_size
+    # low: 1536
+    # high: 1920
+    # step: 128
+
+ratio:
+    dist: suggest_uniform
+    name: ratio
+    low: 0.1
+    high: 0.4
+
+crop_size: # in case using nncf, nncf requires additional memory space. Work around for OOM
+    1536 # crop size determines the actual input size.
+    # If the modle is moderate enough to be loaded on GPU with full size, this may be the same with base size
+    # dist: suggest_int
+    # name: base_size
+    # low: 1792
+    # high: 1792
+    # step: 128
+
+num_non_npa_epoch: 400
+
+path_pattern:
+    mix: '*NPA/Images/*.png'
+    npa: 'NPA/Images/*.png'
+    non_npa: 'nonNPA/Images/*.png'
+
+metric: 'dice'
+
+center_size: 3072
+

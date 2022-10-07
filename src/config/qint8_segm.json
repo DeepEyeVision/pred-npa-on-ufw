@@ -1,0 +1,38 @@
+{
+    "input_info": [ 
+                    {
+                        "sample_size": [],  
+                        "type": "float", 
+                        "filler": "zeros"
+                    }
+    ],
+    "target_device": "CPU",
+    "compression": [ 
+        {
+            "algorithm": "quantization",
+            "initializer": {
+                "range": {
+                    "num_init_samples": 32
+                },
+                "precision": {
+                    "type": "hawq",
+                    "bits": [8],
+                    "compression_ratio": 0.25
+                },
+                "batchnorm_adaptation": {
+                    "num_bn_adaptation_samples": 32,
+                    "num_bn_forget_samples": 32
+                }
+            },
+            "weights": {
+                "mode": "symmetric",
+                "bits": 8
+            },
+            "activations": {
+                "mode": "symmetric",
+                "bits": 8
+            },
+            "quantize_inputs": true
+        }
+    ]
+}
