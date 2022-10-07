@@ -1,0 +1,13 @@
+root: '../dataset'
+logdir: '../logs'
+path_patterns:
+    NPA: path/to/*.png
+    nonNPA: path/to/*.png
+nums:
+    NPA:
+        test: 40
+        val: 40
+        testval: 40
+    nonNPA:
+        test: 1000
+        val: 100
